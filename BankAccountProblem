@@ -1,1 +1,52 @@
+# This is a sample Python script.
+
+# Press Shift+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
+import threading
+import time
+
+class BankAccount(threading.Thread):
+    acctBalance = 100
+    def __init__(self,name,moneyRequest):
+        threading.Thread.__init__(self)
+
+        self.name = name
+        self.moneyRequest = moneyRequest
+
+    def run(self):
+        threadLock.acquire()
+
+        BankAccount.getMoney(self)
+
+        threadLock.release()
+
+    @staticmethod
+    def getMoney(customer):
+        print("{} tries to withdrawn ${} at {}".format(customer.name,customer.moneyRequest
+                                                       ,time.strftime("%H:%M:%S",time.gmtime())))
+
+        if BankAccount.acctBalance - customer.moneyRequest > 0:
+            BankAccount.acctBalance -= customer.moneyRequest
+            print("New account balance : ${}".format(BankAccount.acctBalance))
+        else:
+            print("Not enough money in account")
+            print("Current balance : {}".format(BankAccount.acctBalance))
+    time.sleep(3)
+
+threadLock = threading.Lock()
+
+dean = BankAccount("Dean",1)
+sally = BankAccount("Sally",100)
+park = BankAccount("Park" , 50)
+
+dean.start()
+sally.start()
+park.start()
+
+dean.join()
+sally.join()
+park.join()
+
+print("Execution Ends!")
 
